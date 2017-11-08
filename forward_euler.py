@@ -30,26 +30,28 @@ class Index(object):
 
 def I(x):
     return math.sin(x)
+
 def G(x, t):
     return math.sin(x) + 2*t/(t**2 + 1)
 
-a = 1
-L = math.pi
-T = 10
-Nx = 5
-Nt = 40
+def B(t):
+    return math.log(t**2 + 1)
 
-x = np.linspace(0, L, Nx+1)    
-dx = math.pi/5
-t = np.linspace(0, T, Nt+1)    
-dt = 0.25
-F = a*dt/dx**2
+a   = 1
+L   = math.pi
+T   = 10
+Nx  = 5
+Nt  = 40
+
+x   = np.linspace(0, L, Nx+1)    
+dx  = math.pi/5
+t   = np.linspace(0, T, Nt+1)    
+dt  = 0.25
+F   = a*dt/dx**2
 u   = np.zeros(Nx+1)           
-u_1 = np.zeros(Nx+1)           
-
+u_1 = np.sin(x)         
 u_s = []
-for i in range(0, Nx+1):
-    u_1[i] = I(x[i])
+
 
 for n in t:
     u_s.append((np.copy(u_1), np.sin(x) + math.log(n**2 + 1)))

@@ -18,7 +18,7 @@ class Index(object):
         ax.plot(t, s[1], 'r--')
         plt.draw()
 
-        
+
     def prev(self, event):
         self.ind = (self.ind - 1) % len(u_s)
         s = u_s[self.ind]
@@ -38,17 +38,17 @@ def G(x, t):
 def B(t):
     return math.log(t**2 + 1)
 
-a = 1
-L = math.pi
-T = 10
-Nx = 5
-Nt = 40
+a   = 1
+L   = math.pi
+T   = 10
+Nx  = 5
+Nt  = 40
 
-x = np.linspace(0, L, Nx+1) 
-dx = x[1] - x[0]
-t = np.linspace(0, T, Nt+1)
-dt = t[1] - t[0]
-F = a*dt/dx**2
+x   = np.linspace(0, L, Nx+1) 
+dx  = x[1] - x[0]
+t   = np.linspace(0, T, Nt+1)
+dt  = t[1] - t[0]
+F   = a*dt/dx**2
 u   = np.zeros(Nx+1)
 u_1 = np.zeros(Nx+1)
 
@@ -59,7 +59,7 @@ upper = np.zeros(Nx)
 b     = np.sin(x)
 
 
-main[:] = 1 + 2*F
+main[:]  = 1 + 2*F
 lower[:] = -F 
 upper[:] = -F 
 
