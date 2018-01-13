@@ -1,7 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import math
 from matplotlib.widgets import Button
+
+
+from config import *
 
 import scipy.sparse
 import scipy.sparse.linalg
@@ -29,25 +30,11 @@ class Index(object):
         plt.draw()
 
 
-def I(x):
-    return math.sin(x)
 
-def G(x, t):
-    return np.sin(x) + 2*t/(t**2 + 1)
-
-def B(t):
-    return math.log(t**2 + 1)
-
-a   = 1
-L   = math.pi
-T   = 10
-Nx  = 5
-Nt  = 40
-
+Nx  = int(L/dx)
+Nt  = int(T/dt)
 x   = np.linspace(0, L, Nx+1) 
-dx  = x[1] - x[0]
 t   = np.linspace(0, T, Nt+1)
-dt  = t[1] - t[0]
 F   = a*dt/dx**2
 u   = np.zeros(Nx+1)
 u_1 = np.sin(x)
@@ -75,13 +62,13 @@ errors = []
 for n in t:
     z = np.sin(x) + math.log(n**2 + 1)
     errors.append(max(np.abs(u_1 - z)))
-    u_s.append((np.copy(u_1), np.sin(x) + math.log(n**2 + 1)))
     if n != t[0]:
         b = (u_1 + dt * (np.sin(x) + 2*n/(n**2 + 1))) 
     b[0] = b[Nx] = B(n) 
     u[:] = scipy.sparse.linalg.spsolve(A, b)
     u_1[:] = u
-
+    
+    u_s.append((np.copy(u_1), np.sin(x) + math.log(n**2 + 1)))
 
 #Отрисовка
 fig, ax = plt.subplots()
