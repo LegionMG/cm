@@ -26,5 +26,5 @@ dts = [1/10,1/40, 1/70]
 
 
 #Настройка
-make_graphs = True
-graph = "bw" #fw, bw, kn
+make_graphs = True #два режима - рисовать график\прогонять на нескольких вариантах шагов. True\False соответственно.
+graph = "bw" #fw, bw, kn(forward euler, backward euler, krank-nicholson)
