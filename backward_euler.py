@@ -50,7 +50,7 @@ t   = np.linspace(0, T, Nt+1)
 dt  = t[1] - t[0]
 F   = a*dt/dx**2
 u   = np.zeros(Nx+1)
-u_1 = np.zeros(Nx+1)
+u_1 = np.sin(x)
 
 
 main  = np.zeros(Nx+1)
@@ -62,24 +62,25 @@ b     = np.sin(x)
 main[:]  = 1 + 2*F
 lower[:] = -F 
 upper[:] = -F 
-
+A = scipy.sparse.diags(
+    diagonals=[main, lower, upper],
+    offsets=[0, -1, 1], shape=(Nx+1, Nx+1),
+    format='csr')
+print(A.toarray())
 
 u_s = []
-
+errors = []
 
 #решение
 for n in t:
-    main[0] = main[Nx] = B(n)
-    A = scipy.sparse.diags(
-        diagonals=[main, lower, upper],
-        offsets=[0, -1, 1], shape=(Nx+1, Nx+1),
-        format='csr')
+    z = np.sin(x) + math.log(n**2 + 1)
+    errors.append(max(np.abs(u_1 - z)))
     u_s.append((np.copy(u_1), np.sin(x) + math.log(n**2 + 1)))
-    b = u_1
-    b[0] = b[-1] = B(n) 
-    print(b)
+    if n != t[0]:
+        b = (u_1 + dt * (np.sin(x) + 2*n/(n**2 + 1))) 
+    b[0] = b[Nx] = B(n) 
     u[:] = scipy.sparse.linalg.spsolve(A, b)
-    u_1[:] = u + dt * (np.sin(x) + 2*n/(n**2 + 1)) 
+    u_1[:] = u
 
 
 #Отрисовка
@@ -92,14 +93,13 @@ bnext = Button(axprev, 'Next')
 bnext.on_clicked(callback.next)
 bprev = Button(axnext, 'Previous')
 bprev.on_clicked(callback.prev)
-
 plt.subplots_adjust(bottom=0.2)
+
+print(errors)
 t = x
 s = u_s[0]
-s_b = u_s[-1]
+s_b = u_s[0]
 our, = ax.plot(t, s_b[0], 'bo')
 real, = ax.plot(t, s[1], 'r--')
-
-
 
 plt.show()

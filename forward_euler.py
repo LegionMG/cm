@@ -11,9 +11,7 @@ class Index(object):
 
         s = u_s[self.ind]
         ax.cla()
-
         ax.plot(t, s[0], 'bo')
-
         ax.plot(t, s[1], 'r--')
         plt.draw()
     def prev(self, event):
@@ -21,9 +19,7 @@ class Index(object):
         
         s = u_s[self.ind]
         ax.cla()
-
         ax.plot(t, s[0], 'bo')
-
         ax.plot(t, s[1], 'r--')
         plt.draw()
 
@@ -43,24 +39,28 @@ T   = 10
 Nx  = 5
 Nt  = 40
 
-x   = np.linspace(0, L, Nx+1)    
-dx  = math.pi/5
-t   = np.linspace(0, T, Nt+1)    
-dt  = 0.25
+x   = np.linspace(0, L, Nx+1) 
+dx  = x[1] - x[0]
+t   = np.linspace(0, T, Nt+1)
+dt  = t[1] - t[0]
 F   = a*dt/dx**2
 u   = np.zeros(Nx+1)           
 u_1 = np.sin(x)         
 u_s = []
 
 
+errors = []
+
 for n in t:
+    z = np.sin(x) + math.log(n**2 + 1)
+    errors.append(max(np.abs(u_1 - z)))
     u_s.append((np.copy(u_1), np.sin(x) + math.log(n**2 + 1)))
     for i in range(1, Nx):
         u[i] = u_1[i] + F*(u_1[i-1] - 2*u_1[i] + u_1[i+1])+dt*G(x[i], n)
 
     u[0] = math.log((n)**2 + 1);  u[Nx] = math.log((n)**2 + 1)
 
-    u_1[:]= u
+    u_1[:] = u
 
 
 
@@ -81,6 +81,5 @@ s = u_s[0]
 our, = ax.plot(t, s[0], 'bo')
 real, = ax.plot(t, s[1], 'r--')
 
-
-
+print(errors)
 plt.show()
