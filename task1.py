@@ -177,7 +177,7 @@ if make_graphs:
     real, = ax.plot(t, s[1], 'r--')
     plt.show()
 else:
-    data = [("timestep", "spacestep", "error")]
+    data = []
     for dx in dxs:
         for dt in dts:
             Nx  = int(L/dx)
@@ -192,10 +192,10 @@ else:
 
     print("forward_euler:")
     for line in data:
-        print(' '.join(map(str,line)))
+        print(' '.join(map('{0:.4f}'.format, line)))
     print("#"*20)
 
-    data = [("timestep", "spacestep", "error")]
+    data = []
     for dx in dxs:
         for dt in dts:
             Nx  = int(L/dx)
@@ -210,12 +210,12 @@ else:
 
     print("backward_euler:")
     for line in data:
-        print(' '.join(map(str,line)))
+        print(' '.join(map('{0:.4f}'.format, line)))
     print("#"*20)
 
 
 
-    data = [("timestep", "spacestep", "error")]
+    data = []
     for dx in dxs:
         for dt in dts:
             Nx  = int(L/dx)
@@ -230,6 +230,6 @@ else:
 
     print("krank_nicholson:")
     for line in data:
-        print(' '.join(map(str,line)))
+        print(' '.join(map('{0:.4f}'.format, line)))
     print("#"*20)
 

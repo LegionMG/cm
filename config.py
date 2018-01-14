@@ -14,8 +14,8 @@ a   = 1
 L   = math.pi
 T   = 10
 
-dx  = L/5
-dt  = 1/40
+dx  = L/10
+dt  = 1/10
 Nx  = int(L/dx)
 Nt  = int(T/dt)
 
@@ -26,5 +26,5 @@ dts = [1/10,1/40, 1/70]
 
 
 #Настройка
-make_graphs = True #два режима - рисовать график\прогонять на нескольких вариантах шагов. True\False соответственно.
-graph = "bw" #fw, bw, kn(forward euler, backward euler, krank-nicholson)
+make_graphs = False #два режима - рисовать график\прогонять на нескольких вариантах шагов. True\False соответственно.
+graph = "fw" #fw, bw, kn(forward euler, backward euler, krank-nicholson)
