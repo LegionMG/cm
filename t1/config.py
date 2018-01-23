@@ -2,13 +2,16 @@ import numpy as np
 import math
 
 def I(x):
-    return math.sin(x)
+    return np.sin(x)
 
 def G(x, t):
     return np.sin(x) + (2*t)/(t**2 + 1)
 
 def B(t):
-    return math.log(t**2 + 1)
+    return np.log(t**2 + 1)
+
+def R(x, t):
+    return I(x) + B(t)
 
 a   = 1
 L   = math.pi

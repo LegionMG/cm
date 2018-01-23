@@ -33,17 +33,17 @@ Nx  = int(L/dx)
 Nt  = int(T/dt)
 x   = np.linspace(0, L, Nx+1) 
 t   = np.linspace(0, T, Nt+1)
-F   = a*dt/dx**2
+F   = a*a*dt/dx**2
 
 
 def theta_met(theta):
     u   = np.zeros(Nx+1)
-    u_1 = np.sin(x)
+    u_1 = I(x)
 
     main  = np.zeros(Nx+1)
     lower = np.zeros(Nx)
     upper = np.zeros(Nx)
-    b     = np.sin(x)
+    b     = np.zeros(Nx+1)
 
     #theta = 0.5
 
@@ -55,25 +55,19 @@ def theta_met(theta):
         offsets=[0, -1, 1], shape=(Nx+1, Nx+1),
         format='csr')
 
-    #print(u_s)
     meths = [[] for _ in range(len(t))]
-    reals = [(np.sin(x) + math.log(i**2 + 1))[:] for i in t]
+    reals = [R(x, i) for i in t]
     errors = []
     #решение
     for i in range(len(t)):
         
-
+        meths[i] = (np.copy(u_1))
         b[1:-1] = u_1[1:-1] + F * (1-theta) *(u_1[:-2] - 2*u_1[1:-1] + u_1[2:]) + dt*G(x[1:-1], t[i])
         b[0] = b[-1] = B(t[i]) 
         u[:] = scipy.sparse.linalg.spsolve(A, b)
+        errors.append(max(np.abs(u_1 - R(x,t[i]))))
         u_1[:] = u
 
-
-        meths[i] = (np.copy(u_1))
-        z = np.sin(x) + math.log(t[i]**2 + 1)
-        errors.append(max(np.abs(u_1 - z)))
-
-    #print(u_s)
     return reals, meths, max(errors)
 
 
@@ -84,7 +78,7 @@ d = {"fw": 0, "bw": 1, "kn": 0.5}
 if make_graphs:
     reals, meths, e = theta_met(d[graph])
     #print(meths)
-    print("Error: {0}".format(e))
+    print(f"Error: {e}")
     fig, ax = plt.subplots()
     callback = Index()
 
@@ -97,7 +91,6 @@ if make_graphs:
     plt.subplots_adjust(bottom=0.2)
 
     t = x
-    print(meths[0], reals[0])
     our, = ax.plot(t, list(meths[0]), 'bo')
     real, = ax.plot(t, reals[0], 'r--')
     plt.show()
