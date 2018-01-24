@@ -26,8 +26,8 @@ dx  = L/Nx
 dt  = T/Nt
 
 
-Nxs = [5, 10, 20, 40, 70]
-Nts = [40, 80, 150, 300, 600]
+Nxs = [5, 10, 20, 50, 100]
+Nts = [40, 100, 200, 500, 1000]
 
 dxs = [L/x for x in Nxs]
 dts = [T/x for x in Nts]
