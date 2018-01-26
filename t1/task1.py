@@ -52,6 +52,18 @@ def theta_met(theta):
     upper[0] = 0
     lower[-1] = 0
     main[0] = main[-1] = 1
+    '''
+    | 1    0     0   ....... 0  0  0 |     | u0 |    |  b  |
+    |-F (1+2F)  -F   ....... 0  0  0 |     | u1 |    | u+f |
+    | 0   -F   (1+2F) ...... 0  0  0 |     | u2 |    |.....|
+    |................................|  *  |....|  = |     |  
+    |.................. -F (1+2F) -F |     |un-1|    |     |
+    |..................  0    0    1 |     | un |    |  b  |
+
+    
+
+    '''
+
     A = scipy.sparse.diags(
         diagonals=[main, lower, upper],
         offsets=[0, -1, 1], shape=(Nx+1, Nx+1),
@@ -60,9 +72,7 @@ def theta_met(theta):
     meths = [[] for _ in range(len(t))]
     reals = [R(x, i) for i in t]
     errors = []
-    #решение
     for i in range(len(t)):
-        
         meths[i] = (np.copy(u_1))
         b[1:-1] = u_1[1:-1] + F * (1-theta) * (u_1[:-2] - 2*u_1[1:-1] + u_1[2:]) + dt*G(x[1:-1], t[i])
 
@@ -70,7 +80,6 @@ def theta_met(theta):
         u[:] = scipy.sparse.linalg.spsolve(A, b)
         errors.append(max(np.abs(u_1 - R(x,t[i]))))
         u_1[:] = u
-    #print(meths[-1])
     return reals, meths, max(errors)
 
 
